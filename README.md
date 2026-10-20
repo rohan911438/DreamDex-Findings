@@ -2,14 +2,14 @@
 
 **Feedback-track submission for the [dreamDEX Perps Builder Bounty](https://dorahacks.io/hackathon/dreamdex-perps-bounty/detail) (DoraHacks, Track 1: Feedback).**
 
-An independent review of dreamDEX perpetuals on the **Somnia Tokyo testnet (Hideki, chain 50383)**, covering the TypeScript SDK, the indexer API, the developer and trader documentation, and the official bot kit's perp strategies. Each of the 17 findings is reproducible from this repository with read-only scripts, and every log in `evidence/` records the block range and versions it ran against.
+An independent review of dreamDEX perpetuals on the **Somnia Tokyo testnet (Hideki, chain 50383)**, covering the contracts' observable behaviour, the TypeScript SDK, the indexer API, the testnet app, the developer and trader documentation, and the official bot kit's perp strategies. Each of the 25 findings is reproducible from this repository with read-only scripts, and every log in `evidence/` records the block range and versions it ran against.
 
 | Severity | Count | Reward per accepted item |
 |---|---|---|
 | Critical | **0** | $40 |
-| Major | **6** | $40 |
-| Normal | **11** | $15 |
-| **Total** | **17** | |
+| Major | **7** | $40 |
+| Normal | **18** | $15 |
+| **Total** | **25** | |
 
 ---
 
@@ -62,9 +62,11 @@ Severity follows the bounty's three levels. The definitions below are the ones a
 
 ## Findings
 
+IDs are stable: findings added after the first round take the next free number (MAJOR-18, NORMAL-19 … NORMAL-25), so an ID never changes meaning once published. The tables below group them by severity.
+
 ### Critical
 
-**None filed.** No issue met the critical bar under the rubric above. The candidates examined for critical impact, and why each was ruled out, are listed under [Investigated and ruled out](#investigated-and-ruled-out).
+**None filed.** No issue met the critical bar under the rubric above. The money-safety controls that could be tested held: withdrawals enforce margin and the paper-USDso credit floor, credit claims are once per address, wrong-side stop pairs are rejected, fills are price-banded, and no account was left below maintenance margin. Each candidate is listed under [Investigated and ruled out](#investigated-and-ruled-out).
 
 ### Major
 
@@ -75,7 +77,8 @@ Severity follows the bounty's three levels. The definitions below are the ones a
 | [MAJOR-03](feedback/MAJOR-03-botkit-shannon-addresses-on-hideki.md) | SDK | Bot kit builds Hideki clients with the Shannon address set | Pool status discovery fails silently; halted or close-only markets look tradeable to every perp strategy. |
 | [MAJOR-04](feedback/MAJOR-04-botkit-perp-starter-wrong-side-bracket.md) | SDK | `perp-starter` brackets an existing position using `PERP_SIDE`, not the position's side | The bot crashes leaving no TP/SL, or (with a trading key) takes "profit" at a loss and "stops out" in profit. |
 | [MAJOR-05](feedback/MAJOR-05-botkit-perp-maker-loses-live-quotes.md) | SDK | `perp-maker` drops quote IDs whose cancel failed and exits outside its cleanup path | RPC errors leave quotes resting unmanaged at stale prices, multiplied by automatic restarts. |
-| [MAJOR-06](feedback/MAJOR-06-missing-reduce-only-orders.md) | contracts | No reduce-only flag for regular perp orders; `params.reduceOnly` is silently ignored | A close sized from a stale read can open the opposite position. |
+| [MAJOR-06](feedback/MAJOR-06-missing-reduce-only-orders.md) | contracts | No reduce-only flag for regular perp orders; `params.reduceOnly` is silently ignored (the trader docs advertise reduce-only orders) | A close sized from a stale read can open the opposite position. |
+| [MAJOR-18](feedback/MAJOR-18-contracts-withdrawable-view-overstates.md) | contracts | `MarginBank.getWithdrawableCollateral` (SDK `withdrawable`) ignores unrealized PnL and margin | Overstates by up to 5.5×, once above total equity; withdrawing it reverts on 4 of 4 accounts with positions. |
 
 ### Normal
 
@@ -92,6 +95,13 @@ Severity follows the bounty's three levels. The definitions below are the ones a
 | [NORMAL-15](feedback/NORMAL-15-sdk-load-markets-fails-open-on-discovery-error.md) | SDK | `loadMarkets` fails open: status discovery errors leave every perp `active: true` |
 | [NORMAL-16](feedback/NORMAL-16-docs-network-has-three-names.md) | docs | The perps network is "Tokyo", "Hideki" or "DreamDEX region" depending on the page; nothing links them |
 | [NORMAL-17](feedback/NORMAL-17-botkit-stop-deposit-labelled-somi.md) | SDK | Bot kit tells testnet users stop deposits are in SOMI; on the perps testnet they are STT |
+| [NORMAL-19](feedback/NORMAL-19-app-withdraw-ceiling-wrong-for-paper-usdso.md) | app | App's perps withdraw ceiling ignores the paper-USDso credit floor: offers amounts that revert, or 0 when 20.88 USDso is withdrawable |
+| [NORMAL-20](feedback/NORMAL-20-docs-paper-usdso-market-restriction-not-in-effect.md) | docs | Docs exclude paper USDso from six markets; on chain it can open on all 21 (stale docs or misconfigured allowlist) |
+| [NORMAL-21](feedback/NORMAL-21-docs-paper-usdso-leverage-change.md) | docs | Docs say paper-USDso leverage "can't be changed"; `setMaxLeverage` succeeds 18 of 18 times |
+| [NORMAL-22](feedback/NORMAL-22-docs-backstop-bidders.md) | docs | Docs say no backstop bidders are registered; the LiquidationEngine reports `bidderCount: 1` |
+| [NORMAL-23](feedback/NORMAL-23-docs-funding-direction-baseline.md) | docs | "Perp below index ⇒ shorts pay" is false on 8 of 21 markets: an undocumented +0.01%/8h baseline makes longs pay |
+| [NORMAL-24](feedback/NORMAL-24-docs-errors-page-missing-perp-errors.md) | docs | The Errors page the perps docs link to has no perp, MarginBank or perp-stop errors (9 of 9 observed are missing) |
+| [NORMAL-25](feedback/NORMAL-25-sdk-fetch-trades-ohlcv-ignore-since.md) | SDK | `fetchTrades` / `fetchOHLCV` return the newest rows instead of starting at `since`; history can't be paged |
 
 ## Investigated and ruled out
 
@@ -109,6 +119,12 @@ These were checked specifically for critical or major impact and are **not** fil
 | Trading-key value extraction | Whether a linked bot key could trade the owner against an attacker at extreme prices | Placement has no price band, but fills are bounded by `FillPriceOutsideBand` (fills about 8% from mark rejected). Exposure is limited to what any trade-permission key has. Not filed. |
 | Docs data | Base-decimals table, ticks, minimum sizes, leverage and margin rates | All match the chain exactly. |
 | Indexer open orders | Order IDs from `fetchOpenOrders` against the pool's own book, read at the same moment, 4 rounds | Identical every round (11/11, 19/19, 20/20, 20/20). No stale or missing orders. |
+| Withdrawal enforcement | `MarginBank.withdraw` binary-searched at pinned blocks on 10 accounts (ordinary and paper-USDso) | Never allowed more than margin and the credit floor permit. Only the **view** is wrong (MAJOR-18). |
+| Paper-USDso claims | `VoucherDistributor` eligibility for credited accounts | Enforced once per address (`isClaimed`); larger credit floors come from the weekly Arena credit. |
+| Funding direction in the bot kit | `perp-funding` side selection against the rate's sign | Correct: positive funding ⇒ hold the short. Only the **docs** rule is wrong (NORMAL-23). |
+| Candles vs trades | 1-minute candles rebuilt from raw fills for ETH and SOL (38 and 35 buckets) | Open, high, low, close and volume match exactly. |
+| Error selectors | All 58 selectors on the Errors page recomputed with keccak256 | All correct. Only coverage is missing (NORMAL-24). |
+| Margin thresholds and fees | Close-out = ½ maintenance, funding window/interval, stop deposit, liquidation penalty on all 21 markets | All match the docs (close-out ½ MM, 8 h / 1 h, 0.15 STT, 100 bps). |
 | Unified market data | `fetchTicker`, `fetchOrderBook`, `fetchTrades`, `fetchOHLCV`, `fetchFundingRate` on BTC | Consistent with each other and the chain. |
 
 ## Observations not filed
@@ -138,11 +154,11 @@ node extract-code.mjs
 
 | Finding | Script |
 |---|---|
-| MAJOR-01 … MAJOR-06 | `repro/01-*.ts` … `repro/06-*.ts` |
-| NORMAL-07 … NORMAL-16 | `repro/07-*.ts` … `repro/16-*.ts` |
+| MAJOR-01 … MAJOR-06, MAJOR-18 | `repro/01-*.ts` … `repro/06-*.ts`, `repro/18-*.ts` |
+| NORMAL-07 … NORMAL-16, NORMAL-19 … NORMAL-25 | `repro/<NN>-*.ts` |
 | NORMAL-17 | source excerpts: `evidence/code/17-*` |
 
-**Live-state note.** MAJOR-01 and MAJOR-04 depend on accounts that are actively trading (a market maker with resting quotes near its position cap, a short holder that has used stops). Both scripts accept an account argument, and MAJOR-04 searches for a suitable account by itself. The block numbers in each log show the exact state the evidence came from.
+**Live-state note.** MAJOR-01, MAJOR-04, MAJOR-18, NORMAL-19 and NORMAL-20 depend on accounts that are actively trading (a market maker with resting quotes near its position cap, a short holder that has used stops, accounts holding positions or paper USDso). Both scripts accept an account argument, and MAJOR-04 searches for a suitable account by itself. The block numbers in each log show the exact state the evidence came from.
 
 ## Repository layout
 
@@ -150,7 +166,8 @@ node extract-code.mjs
 feedback/        one Markdown file per finding, in the bounty template, prefixed MAJOR- / NORMAL-
 evidence/        <NN>-<name>.log: output of repro/<NN>-<name>.ts with a header
                  (UTC time, chain id, head block range, RPC, indexer, SDK/viem/node versions)
-evidence/code/   exact source lines each finding cites, with line numbers and permanent links
+evidence/code/   exact source lines each finding cites, with line numbers and permanent links;
+                 app excerpts (06-app-*, 19-app-*) are verbatim from the public bundle, with chunk URL and SHA-256
 observations/    items investigated but not filed (with their history and scripts)
 repro/           read-only reproduction scripts (TypeScript, run with tsx), numbered to match findings
   lib.ts         shared client, eth_call simulator, revert decoder, on-chain book reader

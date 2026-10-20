@@ -42,6 +42,7 @@ markets["ETH/USDSO:USDSO"] -> undefined (no such key)
 ## Evidence
 
 - Log: [`evidence/11-sdk-perps-guide-symbols.log`](../evidence/11-sdk-perps-guide-symbols.log) (includes the full list of 21 live symbols)
+- The same stale symbol is in the SDK's **API typings**: the JSDoc example for `fetchFundingRateHistory` in `dist/unified/exchange.d.ts` is `exchange.fetchFundingRateHistory("BTC/USDSO:USDSO", since, 100)`. Copied as written, it throws `InvalidInputError: unknown symbol BTC/USDSO:USDSO — call loadMarkets() first` even after `loadMarkets()`
 
 ## Suggested fix
 

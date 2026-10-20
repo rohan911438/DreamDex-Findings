@@ -1,0 +1,17 @@
+# Finding 19
+# Source: dreamDEX testnet app, public JavaScript bundle (fetched 2026-10-20 from https://app.testnet.dreamdex.io/perps)
+# https://app.testnet.dreamdex.io/_next/static/immutable/chunks/0uph-3x4hnslu.js
+# sha256: 856efae728867d5a1731cadf800e1f341bf46e59e728ebe4746d16785ae40c64
+
+--- minified excerpt (verbatim) ---
+"perpWithdrawableCeiling",0,function(e){let t=e.withdrawable>0n?e.withdrawable:0n;if(e.imReq<=0n)return t;let r=e.equity-e.imReq;if(r<=0n)return 0n;let n=99n*r/100n;return n<t?n:t}])}
+
+--- same code, formatted for reading ---
+perpWithdrawableCeiling(e) {
+  let t = e.withdrawable > 0n ? e.withdrawable : 0n;   // MarginBank.getWithdrawableCollateral
+  if (e.imReq <= 0n) return t;
+  let r = e.equity - e.imReq;
+  if (r <= 0n) return 0n;
+  let n = 99n * r / 100n;                               // 99% of (equity - initial margin)
+  return n < t ? n : t;                                 // no term for the voucher credit floor
+}

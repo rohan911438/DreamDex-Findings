@@ -1,0 +1,21 @@
+# Evidence for finding 24
+# command      : npx tsx repro/24-errors-page-missing-perp-errors.ts
+# started (UTC): 2026-10-20T13:49:23.666Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28522733 -> 28522766
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+error                               selector     in SDK ABI  on Errors page  seen when
+MaxPositionSizeExceeded             0x714b36d6   yes         NO              PerpPool placeOrder over the per-account cap (MAJOR-01)
+InsufficientMarginForOrder          0x7ea61260   yes         NO              PerpPool placeOrder over the margin limit
+FillPriceOutsideBand                0xec4b288c   yes         NO              PerpPool fill too far from the mark
+InsufficientCollateral              0x3a23d825   yes         NO              placeOrderFor with a wrongly scaled quantity (named on the perps page)
+IsolatedMarketBlocked               0xaa4fc774   yes         NO              isolated account ordering in another market (named on the perps page)
+NoReducingPositionAtCreation        0xd156c90a   yes         NO              PerpStopOrderRegistry: reduce-only stop on the wrong side (MAJOR-04)
+RegistryNotApprovedByOwner          0x28e0a7ba   yes         NO              PerpStopOrderRegistry: operator grant missing
+InsufficientMarginAfterWithdrawal   0x30c29a70   yes         NO              MarginBank.withdraw above the margin limit (MAJOR-18)
+WithdrawalBelowCreditFloor          0x503d280d   yes         NO              MarginBank.withdraw into paper USDso (NORMAL-19)
+
+9 of 9 perp-path errors are not on the Errors page

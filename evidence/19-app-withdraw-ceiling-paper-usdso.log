@@ -1,0 +1,12 @@
+# Evidence for finding 19
+# command      : npx tsx repro/19-app-withdraw-ceiling-paper-usdso.ts
+# started (UTC): 2026-10-20T13:47:55.482Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28521852 -> 28522095
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+0x021B6427BCc35Bd97aDBDe4021bE125eb84edbb1 @28521894: credit floor 2000.000000 | equity 1989.643561 | app ceiling 19.580688 -> withdraw: WithdrawalBelowCreditFloor() | largest accepted 19.423233
+0xDc2a6e2f1A0D1bbE1bc19dE4f91937f195E986A0 @28521966: credit floor 2000.000000 | equity 1945.919043 | app ceiling 131.412414 -> withdraw: WithdrawalBelowCreditFloor() | largest accepted 129.483001
+0x63284B6863D2973781DF2aE47B6F37fc8D453179 @28522027: credit floor 2000.000000 | equity 2103.174717 | app ceiling 0.000000 -> withdraw: (app shows 0) | largest accepted 20.875265

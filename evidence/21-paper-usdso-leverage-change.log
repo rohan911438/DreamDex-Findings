@@ -1,0 +1,15 @@
+# Evidence for finding 21
+# command      : npx tsx repro/21-paper-usdso-leverage-change.ts
+# started (UTC): 2026-10-20T13:48:54.925Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28522446 -> 28522569
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+0x021B6427BCc35Bd97aDBDe4021bE125eb84edbb1 BTC  paper USDso 2000 | current 6 | market max 20x | setMaxLeverage: 2x OK, 19x OK, 20x OK
+0x021B6427BCc35Bd97aDBDe4021bE125eb84edbb1 ADA  paper USDso 2000 | current unset | market max 10x | setMaxLeverage: 2x OK, 9x OK, 10x OK
+0x021B6427BCc35Bd97aDBDe4021bE125eb84edbb1 ETH  paper USDso 2000 | current unset | market max 20x | setMaxLeverage: 2x OK, 19x OK, 20x OK
+0x63284B6863D2973781DF2aE47B6F37fc8D453179 BTC  paper USDso 2000 | current unset | market max 20x | setMaxLeverage: 2x OK, 19x OK, 20x OK
+0x63284B6863D2973781DF2aE47B6F37fc8D453179 ADA  paper USDso 2000 | current unset | market max 10x | setMaxLeverage: 2x OK, 9x OK, 10x OK
+0x63284B6863D2973781DF2aE47B6F37fc8D453179 ETH  paper USDso 2000 | current unset | market max 20x | setMaxLeverage: 2x OK, 19x OK, 20x OK

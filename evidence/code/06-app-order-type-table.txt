@@ -1,0 +1,7 @@
+# Finding 06
+# Source: dreamDEX testnet app, public JavaScript bundle (fetched 2026-10-20 from https://app.testnet.dreamdex.io/perps)
+# https://app.testnet.dreamdex.io/_next/static/immutable/chunks/128zk_xoewr3k.js
+# sha256: 71268dd34c69f650da7138d5e9bd505c0b7d49ac7642607c1838b5ac43e58042
+
+--- order-type table (verbatim, truncated) ---
+let p={market:{advancedType:null,isAdvanced:!1,label:"Market",placementEnabled:!0,reduceOnly:!1,requiresLimitPrice:!1,supportsTpSlAttach:!0,triggerLabel:null},limit:{advancedType:null,isAdvanced:!1,label:"Limit",placementEnabled:!0,reduceOnly:!1,requiresLimitPrice:!0,supportsTpSlAttach:!0,triggerLabel:null},"stop-market":{advancedType:i.AdvancedOrderType.StopMarket,isAdvanced:!0,label:"Stop Market",placementEnabled:!0,reduceOnly:!0,requiresLimitPrice:!1,supportsTpSlAttach:!1,triggerLabel:"Stop price"},"stop-limit":{advancedType:i.AdvancedOrderType.StopLimit,isAdvanced:!0,label:"Stop Limit",placementEnabled:!0,reduceOnly:!0,requiresLimitPrice:!0,supportsTpSlAttach:!1,triggerLabel:"Stop price"},"take-profit-market":{advancedType:i.AdvancedOrderType.TakeProfitMarket,isAdvanced:!0,label:"Take Profit Market",placementEnabled:!0,reduceOnly:!0,requiresLimitPrice:!1,supportsTpSlAttach:!1,triggerLabel:"Take profit price"},"take-profit-limit":{advancedType:i.AdvancedOrderType.TakeProfitLimit,isAdvanced:!0,label:"Take Profit Limit",placementEnabled:!0,reduceOnly:!0,requiresLimitPrice:!0,support

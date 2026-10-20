@@ -1,0 +1,19 @@
+# Evidence for finding 18
+# command      : npx tsx repro/18-withdrawable-view-overstates.ts
+# started (UTC): 2026-10-20T13:46:42.901Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28521131 -> 28521850
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+MarginBank 0x478769e1177c0773c43a593dccc4ad15f15f1394
+account                                      block      equity           view(withdrawable)  withdraw(view)                         largest accepted   view / true
+0x47537E3A3ea6e9391F3B26Ea45618db6828c8bfF 28521521    550355.860341      553227.718927  InsufficientMarginAfterWithdrawal()       100633.835814  5.50x
+   SDK getMarginAccount().withdrawable = 553418.666944 | imReq 449211.029118 | unlocked 553418.666944 | locked 127511.869781
+0x85C6956392AeeA8dceC55E6DED069506f248a831 28521625    679001.960181      676365.967652  InsufficientCollateral()                  307771.537470  2.20x
+   SDK getMarginAccount().withdrawable = 676365.967652 | imReq 371230.422711 | unlocked 676365.967652 | locked 0.000000
+0x420691db9D2B5a79210FDA48c177471386b6Dfd1 28521728    611668.034945      607628.917104  InsufficientMarginAfterWithdrawal()       554761.747612  1.10x
+   SDK getMarginAccount().withdrawable = 607628.807558 | imReq 56899.006834 | unlocked 607628.807558 | locked 104.148250
+0xDF198f8a0E7e8c1741b518abdc42Be53EA6020d7 28521805        25.970249          28.456890  InsufficientCollateral()                      22.472960  1.27x
+   SDK getMarginAccount().withdrawable = 28.456890 | imReq 3.497289 | unlocked 28.456890 | locked 0.000000

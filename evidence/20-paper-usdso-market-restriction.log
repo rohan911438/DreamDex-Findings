@@ -1,0 +1,27 @@
+# Evidence for finding 20
+# command      : npx tsx repro/20-paper-usdso-market-restriction.ts
+# started (UTC): 2026-10-20T13:48:20.004Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28522096 -> 28522444
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+
+0x021B6427BCc35Bd97aDBDe4021bE125eb84edbb1: creditFloor 2000 USDso (paper USDso present: true)
+  1000PEPE  docs: "No" | voucherMarketAllowed true | current position 0 | eth_call open (min size) -> OK
+  LIT       docs: "No" | voucherMarketAllowed true | current position 0 | eth_call open (min size) -> OK
+  PUMP      docs: "No" | voucherMarketAllowed true | current position 0 | eth_call open (min size) -> OK
+  VVV       docs: "No" | voucherMarketAllowed true | current position 0 | eth_call open (min size) -> OK
+  ZEC       docs: "No" | voucherMarketAllowed true | current position 0 | eth_call open (min size) -> OK
+  ZRO       docs: "No" | voucherMarketAllowed true | current position 1074600000000000000000 | eth_call open (min size) -> OK
+  voucherMarketAllowed = true on 21 of 21 markets
+
+0x48154fF8431cfc05C071E616C87261066714D360: creditFloor 1821.3812193230376 USDso (paper USDso present: true)
+  1000PEPE  docs: "No" | voucherMarketAllowed true | current position 0 | eth_call open (min size) -> OK
+  LIT       docs: "No" | voucherMarketAllowed true | current position 0 | eth_call open (min size) -> OK
+  PUMP      docs: "No" | voucherMarketAllowed true | current position 0 | eth_call open (min size) -> OK
+  VVV       docs: "No" | voucherMarketAllowed true | current position 0 | eth_call open (min size) -> OK
+  ZEC       docs: "No" | voucherMarketAllowed true | current position 0 | eth_call open (min size) -> OK
+  ZRO       docs: "No" | voucherMarketAllowed true | current position 515400000000000000000 | eth_call open (min size) -> OK
+  voucherMarketAllowed = true on 21 of 21 markets

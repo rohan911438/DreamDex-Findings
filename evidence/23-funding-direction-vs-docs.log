@@ -1,0 +1,42 @@
+# Evidence for finding 23
+# command      : npx tsx repro/23-funding-direction-vs-docs.ts
+# started (UTC): 2026-10-20T13:49:12.387Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28522620 -> 28522732
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+market     mark-index   bookmid-index   funding/8h    longs pay?   rule says
+1000PEPE     -0.043%      -0.007%       0.0100%    yes         shorts pay
+ADA          -0.068%      -0.053%       0.0100%    yes         shorts pay
+AVAX         -0.062%      -0.045%       0.0100%    yes         shorts pay
+BNB          -0.031%       0.086%       0.0100%    yes         (mixed)
+BTC          -0.013%       0.168%       0.1421%    yes         (mixed)
+DOGE         -0.059%      -0.008%       0.0100%    yes         shorts pay
+ETH          -0.011%       0.015%       0.0100%    yes         (mixed)
+HYPE         -0.016%       0.116%       0.0101%    yes         (mixed)
+LINK         -0.051%      -0.061%       0.0100%    yes         shorts pay
+LIT          -0.078%      -0.032%      -0.0380%    no          shorts pay
+NEAR         -0.069%      -0.123%      -0.0074%    no          shorts pay
+PUMP         -0.050%       0.026%       0.0100%    yes         (mixed)
+SOL          -0.033%       0.037%       0.0100%    yes         (mixed)
+SUI          -0.031%      -0.002%       0.0100%    yes         shorts pay
+TAO          -0.034%       0.025%       0.0100%    yes         (mixed)
+VVV          -0.027%       0.029%       0.0100%    yes         (mixed)
+WLD          -0.062%      -0.078%       0.0100%    yes         shorts pay
+XLM          -0.039%       0.004%       0.0100%    yes         (mixed)
+XRP          -0.045%      -0.039%       0.0100%    yes         shorts pay
+ZEC           0.004%       0.003%       0.0100%    yes         longs pay
+ZRO           0.050%      -0.015%       0.0100%    yes         (mixed)
+
+markets where BOTH mark and book mid are below index yet funding is positive (longs pay): 8 of 21
+markets at exactly +0.0100% per 8h: 17 of 21
+
+ETH funding history (fetchFundingRateHistory, last 24h, first 6):
+  2026-10-19T14:19:18.000Z  mark 2394.9718  index 2395.9312  (-0.040%)  funding 0.0100%
+  2026-10-19T15:19:18.000Z  mark 2407.6498  index 2408.6484  (-0.041%)  funding 0.0100%
+  2026-10-19T16:19:19.000Z  mark 2400.7891  index 2401.6911  (-0.038%)  funding 0.0100%
+  2026-10-19T17:19:18.000Z  mark 2399.4776  index 2400.5821  (-0.046%)  funding 0.0100%
+  2026-10-19T18:19:21.000Z  mark 2397.0865  index 2398.1281  (-0.043%)  funding 0.0100%
+  2026-10-19T19:19:18.000Z  mark 2397.6530  index 2398.5100  (-0.036%)  funding 0.0100%

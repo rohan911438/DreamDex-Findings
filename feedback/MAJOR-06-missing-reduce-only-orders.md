@@ -45,6 +45,8 @@ ORDER_TYPE values: {"LIMIT":0,"FILL_OR_KILL":1,"MARKET":2,"POST_ONLY":3}
 ## Evidence
 
 - Log: [`evidence/06-no-reduce-only-order.log`](../evidence/06-no-reduce-only-order.log)
+- **App:** the testnet app's order-type table hard-codes `reduceOnly: !1` (false) for `market` and `limit`; only `stop-market`, `stop-limit` and the take-profit types are `reduceOnly: !0`. Verbatim excerpt with chunk URL and SHA-256: [`evidence/code/06-app-order-type-table.txt`](../evidence/code/06-app-order-type-table.txt)
+- **Docs:** the trader Orders page (`/docs/trading/perps-testnet/orders`) nonetheless states, right after the order-type table, *"Reduce-only orders can only shrink a position, never open or flip one."* No regular order type in the contract, SDK or app provides that guarantee
 - Source: [`perp-core/src/orders.ts` L234-298](https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/packages/perp-core/src/orders.ts#L234-L298) (`closePosition`: preview, then position, then book, then MARKET order), excerpted in `evidence/code/06-*`
 - SDK typings: `dist/unified/exchange.d.ts`, `interface CreateOrderParams` (`timeInForce`, `postOnly`, `slippage`, `builder`, `builderFeeBpsTimes1k`, `collateral…`; no `reduceOnly`)
 

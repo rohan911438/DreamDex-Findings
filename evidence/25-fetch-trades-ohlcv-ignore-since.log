@@ -1,0 +1,16 @@
+# Evidence for finding 25
+# command      : npx tsx repro/25-fetch-trades-ohlcv-ignore-since.ts
+# started (UTC): 2026-10-20T13:49:49.268Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28522993 -> 28523055
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+since = 2026-10-20T03:49:55.247Z
+
+fetchTrades(BTC/USDso:USDso, since, 20)            -> 20 rows, 2026-10-20T13:49:50.000Z .. 2026-10-20T13:49:55.000Z
+fetchOHLCV(BTC/USDso:USDso, "1m", since, 20)       -> 20 rows, 2026-10-20T13:30:00.000Z .. 2026-10-20T13:49:00.000Z
+fetchFundingRateHistory(BTC/USDso:USDso, since, 5) -> 5 rows, 2026-10-20T04:11:43.000Z .. 2026-10-20T08:11:43.000Z
+
+ccxt-style next page: fetchTrades(BTC/USDso:USDso, lastSeen+1, 20) -> 0 rows, -
