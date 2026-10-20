@@ -1,0 +1,24 @@
+{
+  "name": "dreamdex-perps-feedback-repro",
+  "private": true,
+  "type": "module",
+  "description": "Read-only reproduction scripts for the dreamDEX Perps Builder Bounty feedback items. Nothing here signs or sends a transaction.",
+  "scripts": {
+    "max-size": "tsx 01-max-size-ignores-resting-orders.ts",
+    "open-orders": "tsx 02-fetch-open-orders-fails-for-makers.ts",
+    "below-min": "tsx 03-create-order-below-min-quantity.ts",
+    "botkit-addresses": "tsx 04-botkit-wrong-address-set.ts",
+    "bracket-side": "tsx 05-perp-starter-wrong-side-bracket.ts",
+    "precision": "tsx 06-unified-amount-precision.ts",
+    "oi-caps": "tsx 07-oi-caps-vs-docs.ts",
+    "expiry-zero": "tsx 08-raw-order-expiry-zero.ts",
+    "portfolio-timeframe": "tsx 09-portfolio-timeframe-error.ts",
+    "balance": "tsx 10-fetch-balance-omits-perps-margin.ts",
+    "write-abi": "tsx 11-perp-write-abi-missing-operator-calls.ts"
+  },
+  "dependencies": {
+    "@somnia-chain/markets-sdk": "0.32.1",
+    "tsx": "^4.19.0",
+    "viem": "^2.21.0"
+  }
+}

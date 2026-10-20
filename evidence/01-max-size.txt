@@ -1,0 +1,80 @@
+account 0x47537E3A3ea6e9391F3B26Ea45618db6828c8bfF
+
+BTC ASK @ block 28492752
+  position -73.59136  maxPositionSize 100
+  resting asks of this account: 1 orders, 0.14725 BTC
+  SDK getMaxPerpOrderSize.maxQuantity = 26.40864 (limitedBy maxPositionSize, placeable true)
+  eth_call placeOrder(qty = SDK max)              -> MaxPositionSizeExceeded()
+  eth_call placeOrder(qty = SDK max - resting)    -> OK
+
+ETH BID @ block 28492772
+  position -141.3539  maxPositionSize 399.5612
+  resting bids of this account: 5 orders, 41.7795 ETH
+  SDK getMaxPerpOrderSize.maxQuantity = 540.9151 (limitedBy maxPositionSize, placeable true)
+  eth_call placeOrder(qty = SDK max)              -> MaxPositionSizeExceeded()
+  eth_call placeOrder(qty = SDK max - resting)    -> OK
+
+ETH ASK @ block 28492785
+  position -141.3539  maxPositionSize 399.5612
+  resting asks of this account: 4 orders, 41.3888 ETH
+  SDK getMaxPerpOrderSize.maxQuantity = 258.2073 (limitedBy maxPositionSize, placeable true)
+  eth_call placeOrder(qty = SDK max)              -> MaxPositionSizeExceeded()
+  eth_call placeOrder(qty = SDK max - resting)    -> OK
+
+SOL BID @ block 28492800
+  position -1854.04  maxPositionSize 4765.44
+  resting bids of this account: 5 orders, 959.09 SOL
+  SDK getMaxPerpOrderSize.maxQuantity = 6619.48 (limitedBy maxPositionSize, placeable true)
+  eth_call placeOrder(qty = SDK max)              -> MaxPositionSizeExceeded()
+  eth_call placeOrder(qty = SDK max - resting)    -> OK
+
+SOL ASK @ block 28492813
+  position -1854.04  maxPositionSize 4765.44
+  resting asks of this account: 5 orders, 959.06 SOL
+  SDK getMaxPerpOrderSize.maxQuantity = 2911.4 (limitedBy maxPositionSize, placeable true)
+  eth_call placeOrder(qty = SDK max)              -> MaxPositionSizeExceeded()
+  eth_call placeOrder(qty = SDK max - resting)    -> OK
+
+XRP BID @ block 28492827
+  position -4412.9  maxPositionSize 68926.4
+  resting bids of this account: 4 orders, 23115.2 XRP
+  SDK getMaxPerpOrderSize.maxQuantity = 73339.3 (limitedBy maxPositionSize, placeable true)
+  eth_call placeOrder(qty = SDK max)              -> MaxPositionSizeExceeded()
+  eth_call placeOrder(qty = SDK max - resting)    -> OK
+
+XRP ASK @ block 28492838
+  position -4412.9  maxPositionSize 68926.4
+  resting asks of this account: 4 orders, 23120.2 XRP
+  SDK getMaxPerpOrderSize.maxQuantity = 64513.5 (limitedBy maxPositionSize, placeable true)
+  eth_call placeOrder(qty = SDK max)              -> MaxPositionSizeExceeded()
+  eth_call placeOrder(qty = SDK max - resting)    -> OK
+
+NEAR BID @ block 28492852
+  position 3844.7  maxPositionSize 50000
+  resting bids of this account: 4 orders, 6405.7 NEAR
+  SDK getMaxPerpOrderSize.maxQuantity = 46155.3 (limitedBy maxPositionSize, placeable true)
+  eth_call placeOrder(qty = SDK max)              -> MaxPositionSizeExceeded()
+  eth_call placeOrder(qty = SDK max - resting)    -> OK
+
+NEAR ASK @ block 28492864
+  position 3844.7  maxPositionSize 50000
+  resting asks of this account: 4 orders, 6405.7 NEAR
+  SDK getMaxPerpOrderSize.maxQuantity = 53844.7 (limitedBy maxPositionSize, placeable true)
+  eth_call placeOrder(qty = SDK max)              -> MaxPositionSizeExceeded()
+  eth_call placeOrder(qty = SDK max - resting)    -> OK
+
+DOGE BID @ block 28492880
+  position -41230  maxPositionSize 1122700
+  resting bids of this account: 4 orders, 378920 DOGE
+  SDK getMaxPerpOrderSize.maxQuantity = 1163930 (limitedBy maxPositionSize, placeable true)
+  eth_call placeOrder(qty = SDK max)              -> MaxPositionSizeExceeded()
+  eth_call placeOrder(qty = SDK max - resting)    -> OK
+
+DOGE ASK @ block 28492891
+  position -41230  maxPositionSize 1122700
+  resting asks of this account: 4 orders, 378980 DOGE
+  SDK getMaxPerpOrderSize.maxQuantity = 1081470 (limitedBy maxPositionSize, placeable true)
+  eth_call placeOrder(qty = SDK max)              -> MaxPositionSizeExceeded()
+  eth_call placeOrder(qty = SDK max - resting)    -> OK
+
+reproduced on 11 market-side(s)

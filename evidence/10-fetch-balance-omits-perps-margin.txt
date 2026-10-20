@@ -1,0 +1,4 @@
+account 0x63284B6863D2973781DF2aE47B6F37fc8D453179
+fetchBalance().USDso            = {"free":0.557358,"used":0,"total":0.557358}
+getMarginAccount (Perps account) = unlocked 1996.437865313236289146 USDso, locked 0, equity 2111.030237986936493665
+fetchBalance keys: STT, tUSDC, ZRO, 1000PEPE, ZEC, PUMP, XLM, LINK, HYPE, AVAX, NEAR, VVV, WLD, SOL, LIT, USDso, ETH, TAO, XRP, WETH, SUI, WBTC, DOGE, BNB, ADA, BTC

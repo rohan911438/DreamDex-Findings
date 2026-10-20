@@ -1,0 +1,2 @@
+loadMarkets(true): resolved (55 entries) in 879 ms
+fetchPositions(): THREW RpcError: @somnia-chain/markets-sdk: rpc getBlock failed: genesis check failed (22 ms)

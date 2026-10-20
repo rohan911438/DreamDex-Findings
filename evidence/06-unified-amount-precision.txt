@@ -1,0 +1,25 @@
+symbol                 precision.amount  lotSize  amount grid implied by precision  matches?
+ZRO/USDso:USDso        1                 0.1      0.1                                yes
+LIT/USDso:USDso        1                 0.1      0.1                                yes
+VVV/USDso:USDso        2                 0.01     0.01                               yes
+1000PEPE/USDso:USDso   0                 100      1                                  NO
+PUMP/USDso:USDso       0                 100      1                                  NO
+ZEC/USDso:USDso        3                 0.001    0.001                              yes
+TAO/USDso:USDso        3                 0.001    0.001                              yes
+WLD/USDso:USDso        0                 1        1                                  yes
+NEAR/USDso:USDso       1                 0.1      0.1                                yes
+XLM/USDso:USDso        0                 1        1                                  yes
+AVAX/USDso:USDso       1                 0.1      0.1                                yes
+LINK/USDso:USDso       1                 0.1      0.1                                yes
+SUI/USDso:USDso        0                 1        1                                  yes
+ADA/USDso:USDso        0                 1        1                                  yes
+BNB/USDso:USDso        3                 0.001    0.001                              yes
+DOGE/USDso:USDso       0                 10       1                                  NO
+XRP/USDso:USDso        1                 0.1      0.1                                yes
+HYPE/USDso:USDso       2                 0.01     0.01                               yes
+SOL/USDso:USDso        2                 0.01     0.01                               yes
+ETH/USDso:USDso        4                 0.0001   0.0001                             yes
+BTC/USDso:USDso        5                 0.00001  0.00001                            yes
+amountToPrecision("1000PEPE/USDso:USDso", 2750) = 2700  (precision.amount says 2750 is already valid)
+amountToPrecision("PUMP/USDso:USDso", 2750) = 2700  (precision.amount says 2750 is already valid)
+amountToPrecision("DOGE/USDso:USDso", 2750) = 2750  (precision.amount says 2750 is already valid)

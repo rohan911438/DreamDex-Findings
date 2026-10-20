@@ -1,0 +1,18 @@
+key                  SOMNIA_TESTNET_ADDRESSES (bot kit)          SOMNIA_HIDEKI_TESTNET_ADDRESSES (docs)
+collateral           0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E   0x9E9492cC533E8696A3b6afC7df730800DF75148f   <-- differs
+marginBank           0xdd4A14A2763FDa39b9759D2D4150DB0e0f085C4E   0x478769E1177C0773c43A593DCCc4Ad15F15F1394   <-- differs
+perpPoolFactory      0x516d2cb6de41bE98444e887793946E65989Ba07b   0xE631fAEE547baeE07353E290f0562ea67d856560   <-- differs
+marketCreator        0xD584e651008538b5C6B1C777cD4fbD54cC19a291   0xAd890D6Ac3c659E1Ed0fA72Cf557DB4cA26bdAff   <-- differs
+priceFeedScheduler   0x7ccAE31E45693475be1e4BAa2360D6997eB2D32B   0x1998C88D54a240b8C671493f27f58eC416b81D7F   <-- differs
+
+== bot kit: SOMNIA_TESTNET_ADDRESSES
+  perpPoolFactory 0x516d2cb6de41bE98444e887793946E65989Ba07b has code on Hideki: NO
+  perp markets 21, active 21, with perpStatus 0
+  BTC/USDso:USDso active=true perpStatus=undefined
+  exchange.perpDiscoveryError: @somnia-chain/markets-sdk: rpc readContract getPerpPools failed: The contract function "getPerpPools" returned no data ("0x").
+
+== docs:    SOMNIA_HIDEKI_TESTNET_ADDRESSES
+  perpPoolFactory 0xE631fAEE547baeE07353E290f0562ea67d856560 has code on Hideki: yes
+  perp markets 21, active 21, with perpStatus 21
+  BTC/USDso:USDso active=true perpStatus={"restricted":false,"registered":true,"tradeable":true}
+  exchange.perpDiscoveryError: null
