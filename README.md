@@ -2,14 +2,14 @@
 
 **Feedback-track submission for the [dreamDEX Perps Builder Bounty](https://dorahacks.io/hackathon/dreamdex-perps-bounty/detail) (DoraHacks, Track 1: Feedback).**
 
-An independent review of dreamDEX perpetuals on the **Somnia Tokyo testnet (Hideki, chain 50383)**, covering the contracts' observable behaviour, the TypeScript SDK, the indexer API, the testnet app, the developer and trader documentation, and the official bot kit's perp strategies. Each of the 25 findings is reproducible from this repository with read-only scripts, and every log in `evidence/` records the block range and versions it ran against.
+An independent review of dreamDEX perpetuals on the **Somnia Tokyo testnet (Hideki, chain 50383)**, covering the contracts' observable behaviour, the TypeScript SDK, the indexer API, the testnet app, the developer and trader documentation, and the official bot kit's perp strategies. Each of the 26 findings is reproducible from this repository with read-only scripts, and every log in `evidence/` records the block range and versions it ran against.
 
 | Severity | Count | Reward per accepted item |
 |---|---|---|
 | Critical | **0** | $40 |
 | Major | **7** | $40 |
-| Normal | **18** | $15 |
-| **Total** | **25** | |
+| Normal | **19** | $15 |
+| **Total** | **26** | |
 
 ---
 
@@ -102,6 +102,7 @@ IDs are stable: findings added after the first round take the next free number (
 | [NORMAL-23](feedback/NORMAL-23-docs-funding-direction-baseline.md) | docs | "Perp below index ⇒ shorts pay" is false on 8 of 21 markets: an undocumented +0.01%/8h baseline makes longs pay |
 | [NORMAL-24](feedback/NORMAL-24-docs-errors-page-missing-perp-errors.md) | docs | The Errors page the perps docs link to has no perp, MarginBank or perp-stop errors (9 of 9 observed are missing) |
 | [NORMAL-25](feedback/NORMAL-25-sdk-fetch-trades-ohlcv-ignore-since.md) | SDK | `fetchTrades` / `fetchOHLCV` return the newest rows instead of starting at `since`; history can't be paged |
+| [NORMAL-26](feedback/NORMAL-26-docs-builder-fee-cap.md) | docs | Docs say every pool caps builder fees at 100000 (100 bps); every perp pool runs 10000 (10 bps) |
 
 ## Investigated and ruled out
 
@@ -119,6 +120,9 @@ These were checked specifically for critical or major impact and are **not** fil
 | Trading-key value extraction | Whether a linked bot key could trade the owner against an attacker at extreme prices | Placement has no price band, but fills are bounded by `FillPriceOutsideBand` (fills about 8% from mark rejected). Exposure is limited to what any trade-permission key has. Not filed. |
 | Docs data | Base-decimals table, ticks, minimum sizes, leverage and margin rates | All match the chain exactly. |
 | Indexer open orders | Order IDs from `fetchOpenOrders` against the pool's own book, read at the same moment, 4 rounds | Identical every round (11/11, 19/19, 20/20, 20/20). No stale or missing orders. |
+| Trading-key / operator scope | From an unauthorized key, eth_call `placeOrderFor` / `cancelOrderFor` / `reduceOrderFor` against a real owner, and `recallFromChild` | All revert (`OnlyApprovedContracts`, `NoFundedPrincipal`). `withdraw`/`deposit` take no account argument, so a bot can only touch its own balance. The linked-bot model holds. |
+| Builder-fee enforcement | eth_call `placeOrder` with builder fees from 0 to uint96 max, unapproved builder | Correct: `BuilderFeeExceedsApproval` up to the cap, `BuilderFeeExceedsCap` above it. Only the documented cap value is wrong (NORMAL-26). |
+| `fetchPositions` size source | Whether the unified position size is a stale indexer snapshot | It is a fresh chain read (`getPerpPosition`), not the indexer. No stale-size bug; MAJOR-06's risk is the read-to-send gap, not the source. |
 | Withdrawal enforcement | `MarginBank.withdraw` binary-searched at pinned blocks on 10 accounts (ordinary and paper-USDso) | Never allowed more than margin and the credit floor permit. Only the **view** is wrong (MAJOR-18). |
 | Paper-USDso claims | `VoucherDistributor` eligibility for credited accounts | Enforced once per address (`isClaimed`); larger credit floors come from the weekly Arena credit. |
 | Funding direction in the bot kit | `perp-funding` side selection against the rate's sign | Correct: positive funding ⇒ hold the short. Only the **docs** rule is wrong (NORMAL-23). |

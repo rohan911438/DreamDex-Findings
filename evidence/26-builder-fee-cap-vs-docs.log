@@ -1,0 +1,19 @@
+# Evidence for finding 26
+# command      : npx tsx repro/26-builder-fee-cap-vs-docs.ts
+# started (UTC): 2026-10-20T14:05:00.973Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28532104 -> 28532232
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+perp pool builder-fee cap (bpsTimes1k) across 21 markets -> {"10000":21}
+docs (Errors page, BuilderCodesNotSupported): "Every mainnet and testnet pool currently runs a 100000 (100 BPS) cap"
+actual: 10000 (= 10 bps = 0.10%), i.e. 10x smaller than documented
+
+BTC placeOrder builderFeeBpsTimes1k=     0 (unapproved builder) -> ACCEPTED
+BTC placeOrder builderFeeBpsTimes1k=  1000 (unapproved builder) -> BuilderFeeExceedsApproval()
+BTC placeOrder builderFeeBpsTimes1k= 10000 (unapproved builder) -> BuilderFeeExceedsApproval()
+BTC placeOrder builderFeeBpsTimes1k= 10001 (unapproved builder) -> BuilderFeeExceedsCap()
+BTC placeOrder builderFeeBpsTimes1k= 50000 (unapproved builder) -> BuilderFeeExceedsCap()
+BTC placeOrder builderFeeBpsTimes1k=100000 (unapproved builder) -> BuilderFeeExceedsCap()
