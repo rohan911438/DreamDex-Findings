@@ -14,7 +14,9 @@
     "expiry-zero": "tsx 08-raw-order-expiry-zero.ts",
     "portfolio-timeframe": "tsx 09-portfolio-timeframe-error.ts",
     "balance": "tsx 10-fetch-balance-omits-perps-margin.ts",
-    "write-abi": "tsx 11-perp-write-abi-missing-operator-calls.ts"
+    "write-abi": "tsx 11-perp-write-abi-missing-operator-calls.ts",
+    "no-reduce-only": "tsx 12-no-reduce-only-order.ts",
+    "rpc-outage": "tsx 13-rpc-outage-throws-in-maker-loop.ts"
   },
   "dependencies": {
     "@somnia-chain/markets-sdk": "0.32.1",
