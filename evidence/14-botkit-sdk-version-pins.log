@@ -1,0 +1,15 @@
+# Evidence for finding 14
+# command      : npx tsx repro/14-botkit-sdk-version-pins.ts
+# started (UTC): 2026-10-20T13:20:25.097Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28505362 -> 28505389
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+dreamdex-bot-kit @ 25798660bbe4674a6f83a960b202852896e2fed4
+packages/perp-core/package.json    "@somnia-chain/markets-sdk": "^0.31.0"  -> allows 0.32.1? NO
+packages/ec-core/package.json      "@somnia-chain/markets-sdk": "^0.30.0"  -> allows 0.32.1? NO
+package-lock.json  node_modules/@somnia-chain/markets-sdk                     0.30.0
+package-lock.json  packages/perp-core/node_modules/@somnia-chain/markets-sdk  0.31.0
+npm registry: latest = 0.32.1; 0.32.1 published 2026-10-13T09:04:28.229Z

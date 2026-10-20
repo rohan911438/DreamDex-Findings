@@ -1,0 +1,38 @@
+# Observation (withdrawn, not a filed finding): fetchOpenOrders timeout, final run
+# command      : npx tsx observations/fetch-open-orders-timeout.ts
+# started (UTC): 2026-10-20T13:14:48.910Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28502006 -> 28503748
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+0x47537E3A3ea6e9391F3B26Ea45618db6828c8bfF #1: 20 orders (368 ms) | pool at block 28502071: 20 resting BTC orders
+0x47537E3A3ea6e9391F3B26Ea45618db6828c8bfF #2: 15 orders (577 ms) | pool at block 28502141: 15 resting BTC orders
+0x47537E3A3ea6e9391F3B26Ea45618db6828c8bfF #3: 19 orders (527 ms) | pool at block 28502211: 19 resting BTC orders
+0x47537E3A3ea6e9391F3B26Ea45618db6828c8bfF #4: 20 orders (550 ms) | pool at block 28502282: 20 resting BTC orders
+0x47537E3A3ea6e9391F3B26Ea45618db6828c8bfF #5: 20 orders (508 ms) | pool at block 28502350: 20 resting BTC orders
+0x47537E3A3ea6e9391F3B26Ea45618db6828c8bfF #6: 20 orders (563 ms) | pool at block 28502418: 20 resting BTC orders
+0x47537E3A3ea6e9391F3B26Ea45618db6828c8bfF #7: 17 orders (525 ms) | pool at block 28502487: 17 resting BTC orders
+0x47537E3A3ea6e9391F3B26Ea45618db6828c8bfF #8: 11 orders (516 ms) | pool at block 28502555: 11 resting BTC orders
+0x47537E3A3ea6e9391F3B26Ea45618db6828c8bfF summary: 0/8 failed, median 527 ms
+
+0x420691db9D2B5a79210FDA48c177471386b6Dfd1 #1: 0 orders (356 ms) | pool at block 28502637: 0 resting BTC orders
+0x420691db9D2B5a79210FDA48c177471386b6Dfd1 #2: 0 orders (458 ms) | pool at block 28502705: 0 resting BTC orders
+0x420691db9D2B5a79210FDA48c177471386b6Dfd1 #3: 0 orders (535 ms) | pool at block 28502781: 0 resting BTC orders
+0x420691db9D2B5a79210FDA48c177471386b6Dfd1 #4: 0 orders (503 ms) | pool at block 28502849: 0 resting BTC orders
+0x420691db9D2B5a79210FDA48c177471386b6Dfd1 #5: 0 orders (582 ms) | pool at block 28502918: 0 resting BTC orders
+0x420691db9D2B5a79210FDA48c177471386b6Dfd1 #6: 0 orders (499 ms) | pool at block 28502986: 0 resting BTC orders
+0x420691db9D2B5a79210FDA48c177471386b6Dfd1 #7: 0 orders (484 ms) | pool at block 28503055: 0 resting BTC orders
+0x420691db9D2B5a79210FDA48c177471386b6Dfd1 #8: 0 orders (649 ms) | pool at block 28503128: 0 resting BTC orders
+0x420691db9D2B5a79210FDA48c177471386b6Dfd1 summary: 0/8 failed, median 503 ms
+
+0x63284B6863D2973781DF2aE47B6F37fc8D453179 #1: 0 orders (296 ms) | pool at block 28503210: 0 resting BTC orders
+0x63284B6863D2973781DF2aE47B6F37fc8D453179 #2: 0 orders (501 ms) | pool at block 28503280: 0 resting BTC orders
+0x63284B6863D2973781DF2aE47B6F37fc8D453179 #3: 0 orders (415 ms) | pool at block 28503348: 0 resting BTC orders
+0x63284B6863D2973781DF2aE47B6F37fc8D453179 #4: 0 orders (467 ms) | pool at block 28503416: 0 resting BTC orders
+0x63284B6863D2973781DF2aE47B6F37fc8D453179 #5: 0 orders (436 ms) | pool at block 28503485: 0 resting BTC orders
+0x63284B6863D2973781DF2aE47B6F37fc8D453179 #6: 0 orders (518 ms) | pool at block 28503553: 0 resting BTC orders
+0x63284B6863D2973781DF2aE47B6F37fc8D453179 #7: 0 orders (422 ms) | pool at block 28503620: 0 resting BTC orders
+0x63284B6863D2973781DF2aE47B6F37fc8D453179 #8: 0 orders (427 ms) | pool at block 28503688: 0 resting BTC orders
+0x63284B6863D2973781DF2aE47B6F37fc8D453179 summary: 0/8 failed, median 436 ms

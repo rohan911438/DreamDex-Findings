@@ -1,0 +1,18 @@
+# Evidence for finding 15
+# command      : npx tsx repro/15-load-markets-fails-open.ts
+# started (UTC): 2026-10-20T13:20:28.017Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28505391 -> 28505454
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+code at 0x000000000000000000000000000000000000dEaD: none
+
+== control: SOMNIA_HIDEKI_TESTNET_ADDRESSES
+  perp markets: 21, active: 21, with perpStatus: 21
+  perpDiscoveryError: null
+
+== same set, perpPoolFactory unreadable
+  perp markets: 21, active: 21, with perpStatus: 0
+  perpDiscoveryError: @somnia-chain/markets-sdk: rpc readContract getPerpPools failed: The contract function "getPerpPools" returned no data ("0x").

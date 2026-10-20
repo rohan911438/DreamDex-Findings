@@ -1,0 +1,14 @@
+# Finding 16
+# Source: somnia-chain/dreamdex-bot-kit @ 25798660bbe4674a6f83a960b202852896e2fed4 : packages/perp-core/src/config.ts
+# https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/packages/perp-core/src/config.ts#L12-L20
+
+--- lines 12-20 ---
+   12 | // a new pool without its symbol changing.
+   13 | //
+   14 | // NETWORK selects the deployment, the same variable the spot and EC families
+   15 | // already read. Perps run on two test networks: `hideki` (the Tokyo testnet,
+   16 | // where the app's testnet accounts and Perps Arena live) and `testnet` (Shannon).
+   17 | // `hideki` is the default. There are no perp pools on mainnet, so `mainnet` is
+   18 | // refused at startup rather than trading against an empty market list.
+   19 | //
+   20 | // OWNER_ADDRESS turns on trading-key mode: PRIVATE_KEY is then a bot key linked

@@ -1,3 +1,0 @@
-fetchPortfolioAnalytics("7d") -> OK
-fetchPortfolioAnalytics("1d") -> InvalidInputError: @somnia-chain/markets-sdk: windowStart must be a finite epoch-ms number, got NaN for timeframe "1d"
-fetchPortfolioAnalytics("1w") -> InvalidInputError: @somnia-chain/markets-sdk: windowStart must be a finite epoch-ms number, got NaN for timeframe "1w"

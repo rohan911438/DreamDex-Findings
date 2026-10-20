@@ -1,0 +1,7 @@
+# Finding 09
+# Source: @somnia-chain/markets-sdk@0.32.1 (npm) : dist/writer.js
+
+--- lines 33-35 ---
+   33 | export function farFutureNs() {
+   34 |     return BigInt(Math.floor(Date.now() / 1000) + 50 * 365 * 24 * 3600) * 1000000000n;
+   35 | }

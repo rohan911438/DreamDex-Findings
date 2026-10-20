@@ -1,3 +1,0 @@
-expireTimestampNs = 0                                -> OrderAlreadyExpired()
-expireTimestampNs = 2^64-1 (max uint64)              -> OK
-expireTimestampNs = now + 50y (what the SDK sends)   -> OK

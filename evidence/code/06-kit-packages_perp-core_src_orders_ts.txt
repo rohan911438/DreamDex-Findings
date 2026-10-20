@@ -1,0 +1,70 @@
+# Finding 06
+# Source: somnia-chain/dreamdex-bot-kit @ 25798660bbe4674a6f83a960b202852896e2fed4 : packages/perp-core/src/orders.ts
+# https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/packages/perp-core/src/orders.ts#L234-L298
+
+--- lines 234-298 ---
+  234 | export async function closePosition(
+  235 |   ctx: WriteCtx,
+  236 |   market: PerpMarket,
+  237 |   account: `0x${string}`,
+  238 |   opts: { fraction?: number; label?: string } = {},
+  239 | ): Promise<PlaceResult> {
+  240 |   const preview = await ctx.exchange.client.previewPerpClosePnl({
+  241 |     pool: market.info.poolAddress,
+  242 |     marginBank: market.info.marginBank,
+  243 |     account,
+  244 |   });
+  245 |   if (!preview.priceable) {
+  246 |     // The preview needs a mark; a reducing ORDER does not. The venue keeps the
+  247 |     // exit open during an oracle outage precisely so a position can be closed,
+  248 |     // but this path cannot size the close without the preview, so it stops
+  249 |     // here rather than guessing a quantity. Closing through an outage needs the
+  250 |     // position's own size instead, which is a separate change.
+  251 |     console.log(
+  252 |       "close skipped: the market is un-priceable, so the close preview has no size to act on. " +
+  253 |         "Reducing orders are still accepted by the venue; close manually if this persists.",
+  254 |     );
+  255 |     return { sent: false, filled: 0n };
+  256 |   }
+  257 |   const whole = preview.closedQuantity;
+  258 |   if (whole <= 0n) return { sent: false, filled: 0n };
+  259 | 
+  260 |   const fraction = Math.min(1, Math.max(0, opts.fraction ?? 1));
+  261 |   const wanted = fraction === 1 ? whole : alignQuantity((whole * BigInt(Math.round(fraction * 1000))) / 1000n, market.info);
+  262 |   if (wanted <= 0n) {
+  263 |     // A partial close of a position that is only a few minimums wide lands
+  264 |     // under `minQuantity`, and the venue has no order smaller than that. Saying
+  265 |     // which number blocked it is the difference between a bug report and a
+  266 |     // setting the caller can change.
+  267 |     const min = Number(BigInt(market.info.minQuantity)) / 10 ** market.info.baseDecimals;
+  268 |     const size = Number(whole) / 10 ** market.info.baseDecimals;
+  269 |     console.log(
+  270 |       `close skipped: ${(fraction * 100).toFixed(0)}% of ${size} ${market.info.baseSymbol} is below the market ` +
+  271 |         `minimum of ${min}. Close the whole position, or raise the fraction.`,
+  272 |     );
+  273 |     return { sent: false, filled: 0n };
+  274 |   }
+  275 | 
+  276 |   const position = await positionIn(ctx.exchange, market);
+  277 |   if (!position) return { sent: false, filled: 0n };
+  278 | 
+  279 |   // Reducing a long means selling, and the reverse. Reducing orders are accepted
+  280 |   // even while a market is un-priceable, which is what makes the exit reachable
+  281 |   // during an oracle outage.
+  282 |   const side: Side = position.side === "long" ? "short" : "long";
+  283 |   const book = await ctx.exchange.fetchOrderBook(market.symbol, 1);
+  284 |   const touch = side === "long" ? book.asks[0]?.[0] : book.bids[0]?.[0];
+  285 |   if (touch === undefined) {
+  286 |     console.log("close skipped: no counterparty resting on the book");
+  287 |     return { sent: false, filled: 0n };
+  288 |   }
+  289 |   return placePerp({
+  290 |     ctx,
+  291 |     market,
+  292 |     side,
+  293 |     price: BigInt(Math.round(touch * 1e18)),
+  294 |     quantity: wanted,
+  295 |     orderType: ORDER_TYPE.MARKET,
+  296 |     label: opts.label ?? "close",
+  297 |   });
+  298 | }

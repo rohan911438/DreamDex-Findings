@@ -1,0 +1,16 @@
+# Finding 07
+# Source: @somnia-chain/markets-sdk@0.32.1 (npm) : dist/unified/structs.js
+
+--- lines 189-200 ---
+  189 | /**
+  190 |  *  Decimal places implied by a raw step size (tick/lot) at `decimals` scale —
+  191 |  *  e.g. tick 1000 at 6dp → 3 price decimals.
+  192 |  */
+  193 | export function precisionFromStep(step, decimals) {
+  194 |     const s = Number(step ?? "1");
+  195 |     if (!Number.isFinite(s) || s <= 0)
+  196 |         return decimals;
+  197 |     const human = s / 10 ** decimals;
+  198 |     const places = Math.ceil(-Math.log10(human));
+  199 |     return Math.min(decimals, Math.max(0, places));
+  200 | }

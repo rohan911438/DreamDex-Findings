@@ -1,0 +1,26 @@
+# Finding 05
+# Source: somnia-chain/dreamdex-bot-kit @ 25798660bbe4674a6f83a960b202852896e2fed4 : packages/perp-core/src/orders.ts
+# https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/packages/perp-core/src/orders.ts#L199-L219
+
+--- lines 199-219 ---
+  199 |   return { sent: true, orderId: res.orderId, filled };
+  200 | }
+  201 | 
+  202 | /** Cancel one resting order, tolerating the race where it already went away. */
+  203 | export async function cancelQuietly(ctx: WriteCtx, market: PerpMarket, orderId: bigint): Promise<void> {
+  204 |   if (ctx.config.dryRun) {
+  205 |     console.log(`[dry-run] would cancel order ${orderId}`);
+  206 |     return;
+  207 |   }
+  208 |   try {
+  209 |     if (ctx.tradingKey) {
+  210 |       await cancelFor(ctx.tradingKey, market.info.poolAddress, orderId);
+  211 |     } else {
+  212 |       await ctx.exchange.trader.cancelOrder({ pool: market.info.poolAddress, orderId });
+  213 |     }
+  214 |   } catch (err) {
+  215 |     // An order that filled or expired between the read and the cancel is not a
+  216 |     // failure of the cancel; a cascade of these means the quote is too slow.
+  217 |     console.log(`cancel ${orderId} skipped: ${(err as Error).message.slice(0, 120)}`);
+  218 |   }
+  219 | }

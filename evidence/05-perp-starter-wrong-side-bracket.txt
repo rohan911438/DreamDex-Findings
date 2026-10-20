@@ -1,4 +1,0 @@
-owner 0x13fe00d92abaee7db424028b785b42b8926913b0, BTC position -32244000 raw (negative = SHORT), mark 81542.10579891437
-levels: +2% = 83172.9, -1% = 80726.6
-correct bracket for the short   (buy legs, TP <= -1%, SL >= +2%): ACCEPTED (would arm)
-perp-starter with PERP_SIDE=long (sell legs, TP >= +2%, SL <= -1%): REJECTED NoReducingPositionAtCreation()

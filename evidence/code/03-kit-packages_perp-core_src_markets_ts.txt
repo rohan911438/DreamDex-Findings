@@ -1,0 +1,25 @@
+# Finding 03
+# Source: somnia-chain/dreamdex-bot-kit @ 25798660bbe4674a6f83a960b202852896e2fed4 : packages/perp-core/src/markets.ts
+# https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/packages/perp-core/src/markets.ts#L76-L95
+
+--- lines 76-95 ---
+   76 | /**
+   77 |  * Every live perp market.
+   78 |  *
+   79 |  * Perps arrive as ccxt **swaps**; filtering on `"perp"` returns nothing and
+   80 |  * reads as an empty exchange. `active` is derived from the pool's own gates, so
+   81 |  * an inactive market is one the venue has stopped, not one the indexer missed.
+   82 |  */
+   83 | export async function perpMarkets(
+   84 |   exchange: SomniaMarkets,
+   85 |   reload = false,
+   86 |   opts: { includeHalted?: boolean } = {},
+   87 | ): Promise<PerpMarket[]> {
+   88 |   // `loadMarkets()` serves a cached registry. A polling loop that omits the
+   89 |   // reload flag reads the mark, the funding rate and the open interest it saw
+   90 |   // at startup, forever, which looks like a frozen market rather than a stale
+   91 |   // cache.
+   92 |   const markets = await exchange.loadMarkets(reload);
+   93 |   return Object.values(markets)
+   94 |     .filter((m) => m.type === "swap" && (opts.includeHalted || m.active))
+   95 |     .map(asPerp);

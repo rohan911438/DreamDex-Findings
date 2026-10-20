@@ -1,0 +1,12 @@
+# Evidence for finding 12
+# command      : npx tsx repro/12-portfolio-timeframe-error.ts
+# started (UTC): 2026-10-20T13:20:13.628Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28505247 -> 28505293
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+fetchPortfolioAnalytics("7d") -> OK
+fetchPortfolioAnalytics("1d") -> InvalidInputError: @somnia-chain/markets-sdk: windowStart must be a finite epoch-ms number, got NaN for timeframe "1d"
+fetchPortfolioAnalytics("1w") -> InvalidInputError: @somnia-chain/markets-sdk: windowStart must be a finite epoch-ms number, got NaN for timeframe "1w"

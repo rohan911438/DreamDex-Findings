@@ -1,0 +1,59 @@
+# Finding 05
+# Source: somnia-chain/dreamdex-bot-kit @ 25798660bbe4674a6f83a960b202852896e2fed4 : strategies/perp-maker/src/index.ts
+# https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/strategies/perp-maker/src/index.ts#L125-L137
+# https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/strategies/perp-maker/src/index.ts#L162-L186
+# https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/strategies/perp-maker/src/index.ts#L196-L205
+
+--- lines 125-137 ---
+  125 |       await sleep(REFRESH_MS, stopped);
+  126 |       continue;
+  127 |     }
+  128 | 
+  129 |     if (resting.bid || resting.ask) {
+  130 |       for (const id of [resting.bid, resting.ask]) {
+  131 |         if (id !== undefined) await cancelQuietly(ctx, market, id);
+  132 |       }
+  133 |       resting = { atMark: 0 };
+  134 |     }
+  135 | 
+  136 |     const inventory = me ? await inventoryUsdso(ctx, fresh, mark) : 0;
+  137 |     // Leaning long: push the bid down and pull the ask in, so the ask fills
+
+--- lines 162-186 ---
+  162 |           : { ok: true as const, quantity: wanted };
+  163 |         if (!sized.ok) {
+  164 |           console.log(`${side} side skipped: ${sized.reason}`);
+  165 |           continue;
+  166 |         }
+  167 |         const placed = await placePerp({
+  168 |           ctx,
+  169 |           market: fresh,
+  170 |           side,
+  171 |           price,
+  172 |           quantity: sized.quantity,
+  173 |           orderType: ORDER_TYPE.POST_ONLY,
+  174 |           label: "quote",
+  175 |         });
+  176 |         if (side === "long") next.bid = placed.orderId;
+  177 |         else next.ask = placed.orderId;
+  178 |       }
+  179 |     } catch (err) {
+  180 |       for (const id of [next.bid, next.ask]) {
+  181 |         if (id !== undefined) await cancelQuietly(ctx, market, id);
+  182 |       }
+  183 |       throw err;
+  184 |     }
+  185 | 
+  186 |     resting = next;
+
+--- lines 196-205 ---
+  196 |   await shutdown(ctx);
+  197 | }
+  198 | 
+  199 | main().then(
+  200 |   () => process.exit(0),
+  201 |   (err) => {
+  202 |     console.error(err instanceof Error ? err.message : err);
+  203 |     process.exit(1);
+  204 |   },
+  205 | );

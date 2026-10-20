@@ -1,0 +1,10 @@
+# Finding 17
+# Source: somnia-chain/dreamdex-bot-kit @ 25798660bbe4674a6f83a960b202852896e2fed4 : strategies/perp-starter/src/index.ts
+# https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/strategies/perp-starter/src/index.ts#L97-L101
+
+--- lines 97-101 ---
+   97 |       );
+   98 |     } else {
+   99 |       const somi = await somiPerStop(ctx.exchange, market);
+  100 |       console.log(`each pending stop locks ${Number(somi) / 1e18} SOMI, refunded on cancel; a bracket needs two.`);
+  101 |     }

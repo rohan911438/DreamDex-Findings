@@ -1,0 +1,27 @@
+# Finding 02
+# Source: @somnia-chain/markets-sdk@0.32.1 (npm) : dist/unified/exchange.js
+
+--- lines 4362-4384 ---
+ 4362 |         // Align to the venue's grids HERE, before the market-kind branch: all three
+ 4363 |         // branches read these two values, so one guard covers binary, spot and perp.
+ 4364 |         // The pool rejects an off-lot quantity (`InvalidQuantity`) or an off-tick
+ 4365 |         // price (`InvalidPrice`), and a caller has no way to know the grid without
+ 4366 |         // asking us. Aligning a value already on the grid returns it unchanged, so a
+ 4367 |         // caller who pre-snapped with the helpers sees exactly what they sent.
+ 4368 |         const lotRaw = this.lotOf(t, "createOrder");
+ 4369 |         // floorToRaw, not toRaw: toRaw rounds half-up to the token's decimals, so an
+ 4370 |         // amount with more digits than the token has could arrive here ABOVE what the
+ 4371 |         // caller asked for and already on the grid — 1.2349995 on a 6-dp/0.001-lot
+ 4372 |         // market would go out as 1.235. A quantity always rounds down.
+ 4373 |         const quantity = (Structs.floorToRaw(amount, d.amount) / lotRaw) * lotRaw;
+ 4374 |         if (quantity <= 0n) {
+ 4375 |             // One lot is also the venue's `minQuantity`: every deployed venue sets
+ 4376 |             // tick = lot = min = 10**(collateralDecimals-3) (see the `_note` in
+ 4377 |             // deployments/<chain>/<env>/venues.json), so this threshold is exactly the
+ 4378 |             // venue's own and there is no band where an order passes here and still
+ 4379 |             // reverts as below-minimum.
+ 4380 |             throw new InvalidInputError(`amount ${amount} is below one lot on ${t.symbol} (lot ${Structs.toHumanNum(lotRaw, d.amount)}) — ` +
+ 4381 |                 `it would place a zero-quantity order`);
+ 4382 |         }
+ 4383 |         let limitPrice = price;
+ 4384 |         if (type === "market") {

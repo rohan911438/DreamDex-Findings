@@ -1,0 +1,31 @@
+# Finding 03
+# Source: somnia-chain/dreamdex-bot-kit @ 25798660bbe4674a6f83a960b202852896e2fed4 : packages/perp-core/src/exchange.ts
+# https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/packages/perp-core/src/exchange.ts#L33-L58
+
+--- lines 33-58 ---
+   33 |  * `wsRpcUrl` is not optional even for a read-only bot: chain access itself is
+   34 |  * websocket-backed, so `loadMarkets()` throws `NotConfiguredError` without it
+   35 |  * rather than falling back to HTTP.
+   36 |  *
+   37 |  * The bundled testnet address set serves Hideki too: the singletons the SDK
+   38 |  * looks up sit at the same deterministic addresses there, and the perp pool,
+   39 |  * MarginBank and stop registry come off each market row rather than from it.
+   40 |  */
+   41 | export function createExchange(opts: { withSigner?: boolean } = {}): PerpContext {
+   42 |   loadEnv();
+   43 |   const config = loadConfig();
+   44 | 
+   45 |   if (opts.withSigner && !config.privateKey) {
+   46 |     throw new Error(
+   47 |       "PRIVATE_KEY is required for trading. Set it in .env, or run with DRY_RUN=true to log intended orders instead.",
+   48 |     );
+   49 |   }
+   50 | 
+   51 |   const chain = makeChain(config);
+   52 |   const base = {
+   53 |     indexerUrl: config.indexerUrl,
+   54 |     chain,
+   55 |     wsRpcUrl: config.wsRpcUrl,
+   56 |     addresses: SOMNIA_TESTNET_ADDRESSES,
+   57 |   };
+   58 | 

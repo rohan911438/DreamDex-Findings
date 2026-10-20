@@ -1,0 +1,11 @@
+# Evidence for finding 05
+# command      : npx tsx repro/05-perp-maker-rpc-outage.ts
+# started (UTC): 2026-10-20T13:19:35.958Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28504870 -> 28504925
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+loadMarkets(true): resolved (55 entries) in 898 ms
+fetchPositions(): THREW RpcError: @somnia-chain/markets-sdk: rpc getBlock failed: genesis check failed (19 ms)

@@ -1,0 +1,16 @@
+# Finding 12
+# Source: @somnia-chain/markets-sdk@0.32.1 (npm) : dist/unified/portfolioAnalytics.js
+
+--- lines 160-171 ---
+  160 |     const bucketMs = BUCKET_MS[timeframe];
+  161 |     // Both are derived, so they can only be non-finite if the timeframe table is
+  162 |     // wrong — but they are the values the loop actually steps with, so check the
+  163 |     // thing that matters rather than trusting the derivation. These two are
+  164 |     // belt-and-braces: the checks above already reject every input that reaches
+  165 |     // them today, so no test can distinguish them, and they exist so a future
+  166 |     // change to the derivation cannot quietly reopen the loop. A bad `timeframe`
+  167 |     // from an untyped caller reports itself here.
+  168 |     if (!Number.isFinite(windowStart)) {
+  169 |         throw new InvalidInputError(`windowStart must be a finite epoch-ms number, got ${windowStart} for timeframe "${timeframe}"`);
+  170 |     }
+  171 |     if (!Number.isFinite(bucketMs) || bucketMs <= 0) {

@@ -1,0 +1,32 @@
+# Finding 17
+# Source: somnia-chain/dreamdex-bot-kit @ 25798660bbe4674a6f83a960b202852896e2fed4 : packages/perp-core/src/stops.ts
+# https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/packages/perp-core/src/stops.ts#L12-L17
+# https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/packages/perp-core/src/stops.ts#L78-L83
+# https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/packages/perp-core/src/stops.ts#L125-L133
+
+--- lines 12-17 ---
+   12 | //   • The registry is PER MARKET, on the market row as `stopRegistry`.
+   13 | //   • Arming a stop needs the OperatorPermissionsRegistry passed explicitly,
+   14 | //     because the SDK's bundled address sets do not carry that key.
+   15 | //   • Every pending stop locks SOMI (0.15 on the live markets, a pair twice
+   16 | //     that). It funds the trigger's gas and comes back on cancel, so an account
+   17 | //     holding only collateral cannot arm one.
+
+--- lines 78-83 ---
+   78 |   if (ctx.config.dryRun) {
+   79 |     console.log(
+   80 |       `[dry-run] would arm a ${position} bracket on ${market.display}: ` +
+   81 |         `take-profit ${px(tp)}, stop-loss ${px(sl)}, whole position, 0.30 SOMI locked`,
+   82 |     );
+   83 |     return { sent: false };
+
+--- lines 125-133 ---
+  125 |   const live = orderIds.filter((id) => id !== undefined && id !== null);
+  126 |   if (live.length === 0) return;
+  127 |   if (ctx.config.dryRun) {
+  128 |     console.log(`[dry-run] would cancel ${live.length} stop order(s) and reclaim their SOMI`);
+  129 |     return;
+  130 |   }
+  131 |   await ctx.exchange.trader.cancelPerpStopOrders({ registry: market.info.stopRegistry, orderIds: [...live] });
+  132 |   console.log(`cancelled ${live.length} stop order(s), SOMI refunded`);
+  133 | }

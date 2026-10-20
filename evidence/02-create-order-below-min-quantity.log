@@ -1,0 +1,37 @@
+# Evidence for finding 02
+# command      : npx tsx repro/02-create-order-below-min-quantity.ts
+# started (UTC): 2026-10-20T13:19:09.697Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28504608 -> 28504670
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+market      lot           minQuantity    lots per minimum
+ZRO         0.1           5.1            51
+LIT         0.1           2.8            28
+VVV         0.01          0.44           44
+1000PEPE    100           2700           27
+PUMP        100           1800           18
+ZEC         0.001         0.009          9
+TAO         0.001         0.044          44
+WLD         1             26             26
+NEAR        0.1           5.1            51
+XLM         1             54             54
+AVAX        0.1           1.4            14
+LINK        0.1           0.9            9
+SUI         1             13             13
+ADA         1             46             46
+BNB         0.001         0.014          14
+DOGE        10            120            12
+XRP         0.1           6.9            69
+HYPE        0.01          0.12           12
+SOL         0.01          0.1            10
+ETH         0.0001        0.004          40
+BTC         0.00001       0.00013        13
+
+BTC/USDso:USDso unified limits.amount.min = 0.00013
+ex.amountToPrecision("BTC/USDso:USDso", 0.0001) = 0.0001  (accepted, no error)
+createOrder's only size guard is "quantity <= 0n after lot alignment" (dist/unified/exchange.js, createOrder)
+eth_call placeOrder BTC bid 0.0001 BTC from 0x63284B6863D2973781DF2aE47B6F37fc8D453179 -> QuantityBelowMinimum(10000,13000)
+eth_call placeOrder BTC bid 0.00013 BTC from 0x63284B6863D2973781DF2aE47B6F37fc8D453179 -> OK

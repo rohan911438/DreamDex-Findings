@@ -1,0 +1,13 @@
+# Evidence for finding 13
+# command      : npx tsx repro/13-fetch-balance-omits-perps-margin.ts
+# started (UTC): 2026-10-20T13:20:18.387Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28505294 -> 28505360
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+account 0x63284B6863D2973781DF2aE47B6F37fc8D453179
+fetchBalance().USDso            = {"free":0.557358,"used":0,"total":0.557358}
+getMarginAccount (Perps account) = unlocked 1996.437865313236289146 USDso, locked 0, equity 2104.264081337058296547
+fetchBalance keys: STT, tUSDC, ZRO, LIT, PUMP, ZEC, WETH, SUI, AVAX, LINK, SOL, XLM, BTC, USDso, 1000PEPE, NEAR, ETH, VVV, WLD, HYPE, TAO, XRP, WBTC, DOGE, BNB, ADA

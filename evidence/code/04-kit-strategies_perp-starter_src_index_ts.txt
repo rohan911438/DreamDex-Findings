@@ -1,0 +1,48 @@
+# Finding 04
+# Source: somnia-chain/dreamdex-bot-kit @ 25798660bbe4674a6f83a960b202852896e2fed4 : strategies/perp-starter/src/index.ts
+# https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/strategies/perp-starter/src/index.ts#L119-L125
+# https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/strategies/perp-starter/src/index.ts#L170-L188
+# https://github.com/somnia-chain/dreamdex-bot-kit/blob/25798660bbe4674a6f83a960b202852896e2fed4/strategies/perp-starter/src/index.ts#L218-L228
+
+--- lines 119-125 ---
+  119 |   }
+  120 | 
+  121 |   const existing = me ? await positionIn(ctx.exchange, market) : undefined;
+  122 |   if (existing) {
+  123 |     console.log(`already ${existing.side} ${existing.contracts} ${market.info.baseSymbol}, managing it instead of opening another`);
+  124 |   } else {
+  125 |     const book = await ctx.exchange.fetchOrderBook(market.symbol, 1);
+
+--- lines 170-188 ---
+  170 |   // Set the levels against the mark the POOL acts on, not the market row's.
+  171 |   // The row lags by tens of minutes, so triggers derived from it sit at prices
+  172 |   // the pool never had.
+  173 |   const mark = (await liveMark(ctx.exchange, market)) ?? markOf(market.info);
+  174 |   const up = BigInt(Math.round(mark * (1 + TAKE_PROFIT_PCT / 100) * 1e18));
+  175 |   const down = BigInt(Math.round(mark * (1 - STOP_LOSS_PCT / 100) * 1e18));
+  176 |   const takeProfit = SIDE === "long" ? up : down;
+  177 |   const stopLoss = SIDE === "long" ? down : up;
+  178 |   const px = (v: bigint) => (Number(v) / 1e18).toFixed(2);
+  179 | 
+  180 |   let bracket: { sent: boolean };
+  181 |   if (watchedExits) {
+  182 |     console.log(`${ctx.config.dryRun ? "[dry-run] would watch" : "watching"} take-profit ${px(takeProfit)} and stop-loss ${px(stopLoss)}`);
+  183 |     bracket = { sent: false };
+  184 |   } else if (armedAlready.length > 0) {
+  185 |     bracket = { sent: false };
+  186 |   } else {
+  187 |     bracket = await armBracket({ ctx, market, position: SIDE, takeProfit, stopLoss });
+  188 |   }
+
+--- lines 218-228 ---
+  218 |     );
+  219 | 
+  220 |     // The watched bracket: close the whole position the first cycle the live
+  221 |     // mark reaches either level. An un-priceable mark acts on nothing.
+  222 |     if (watchedExits && live !== undefined) {
+  223 |       const liveRaw = BigInt(Math.round(live * 1e18));
+  224 |       const hitTakeProfit = SIDE === "long" ? liveRaw >= takeProfit : liveRaw <= takeProfit;
+  225 |       const hitStopLoss = SIDE === "long" ? liveRaw <= stopLoss : liveRaw >= stopLoss;
+  226 |       if (hitTakeProfit || hitStopLoss) {
+  227 |         await closePosition(ctx, fresh, me, { label: hitTakeProfit ? "take-profit" : "stop-loss" });
+  228 |         exited = true;

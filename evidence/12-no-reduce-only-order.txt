@@ -1,3 +1,0 @@
-PerpPool.placeOrder inputs: bool isBid, uint64 userData, uint256 price, uint256 quantity, uint64 expireTimestampNs, uint8 orderType, uint8 selfMatchingOption, address builder, uint96 builderFeeBpsTimes1k
-has a reduce-only input: NO
-ORDER_TYPE values: {"LIMIT":0,"FILL_OR_KILL":1,"MARKET":2,"POST_ONLY":3}

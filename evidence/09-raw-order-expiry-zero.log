@@ -1,0 +1,12 @@
+# Evidence for finding 09
+# command      : npx tsx repro/09-raw-order-expiry-zero.ts
+# started (UTC): 2026-10-20T13:19:53.976Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28505050 -> 28505107
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+expireTimestampNs = 0                                -> OrderAlreadyExpired()
+expireTimestampNs = 2^64-1 (max uint64)              -> OK
+expireTimestampNs = now + 50y (what the SDK sends)   -> OK

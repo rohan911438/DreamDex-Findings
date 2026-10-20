@@ -1,0 +1,15 @@
+# Evidence for finding 08
+# command      : npx tsx repro/08-perp-write-abi-missing-operator-calls.ts
+# started (UTC): 2026-10-20T13:19:50.476Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28505015 -> 28505049
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+perpPoolWriteAbi functions: placeOrder, cancelOrder, updateFunding, marginBank
+placeOrderFor            in perpPoolWriteAbi: NO; exported in: (no exported ABI)
+placeOrdersFor           in perpPoolWriteAbi: NO; exported in: (no exported ABI)
+cancelOrderFor           in perpPoolWriteAbi: NO; exported in: (no exported ABI)
+amendOrders              in perpPoolWriteAbi: NO; exported in: orderBookBatchWriteAbi
+getOrderBookParameters   in perpPoolWriteAbi: NO; exported in: (no exported ABI)

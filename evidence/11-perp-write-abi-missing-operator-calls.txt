@@ -1,6 +1,0 @@
-perpPoolWriteAbi functions: placeOrder, cancelOrder, updateFunding, marginBank
-placeOrderFor            in perpPoolWriteAbi: NO; exported in: (no exported ABI)
-placeOrdersFor           in perpPoolWriteAbi: NO; exported in: (no exported ABI)
-cancelOrderFor           in perpPoolWriteAbi: NO; exported in: (no exported ABI)
-amendOrders              in perpPoolWriteAbi: NO; exported in: orderBookBatchWriteAbi
-getOrderBookParameters   in perpPoolWriteAbi: NO; exported in: (no exported ABI)

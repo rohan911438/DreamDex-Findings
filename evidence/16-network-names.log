@@ -1,0 +1,13 @@
+# Evidence for finding 16
+# command      : npx tsx repro/16-network-names.ts
+# started (UTC): 2026-10-20T13:20:34.488Z
+# chain id     : 50383 (Somnia Tokyo testnet / Hideki)
+# head block   : 28505455 -> 28505495
+# rpc          : https://api.hideki2.infra.testnet.somnia.network
+# indexer      : https://hideki-dev.smk.somnia.host/v1/graphql
+# versions     : @somnia-chain/markets-sdk 0.32.1, viem 2.57.7, node v24.16.0
+# mode         : read-only (chain reads, indexer reads, eth_call). Nothing signed or sent.
+chains.hidekiTestnet    id 50383  name "Hideki Testnet"  rpc https://api.hideki2.infra.testnet.somnia.network
+chains.somniaShannon    id 50312  name "Somnia Testnet"  rpc https://api.infra.testnet.somnia.network
+eth_chainId of https://api.hideki2.infra.testnet.somnia.network = 50383
+address-set exports: SOMNIA_TESTNET_ADDRESSES (chain 50312, Shannon), SOMNIA_HIDEKI_TESTNET_ADDRESSES (chain 50383)

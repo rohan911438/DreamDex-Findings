@@ -1,0 +1,25 @@
+# Finding 01
+# Source: @somnia-chain/markets-sdk@0.32.1 (npm) : dist/perp/margin.js
+
+--- lines 1440-1460 ---
+ 1440 |         builderFeeBpsTimes1k: p.builderFeeBpsTimes1k,
+ 1441 |     };
+ 1442 |     const quoteAt = (q) => perpOrderMarginQuote({ ...base, quantity: q });
+ 1443 |     // `_enforceMaxPositionSize` (PerpPool.sol:1865). Its escape clause — a fill that does
+ 1444 |     // not GROW an already-over-cap position is allowed — is what keeps this monotone on
+ 1445 |     // the opposite side, where the position first shrinks toward zero before flipping.
+ 1446 |     const withinPositionCap = (q) => {
+ 1447 |         const newAbs = abs(positionSize + (p.isBid ? q : -q));
+ 1448 |         return newAbs <= params.maxPositionSize || newAbs <= absPosition;
+ 1449 |     };
+ 1450 |     // Beyond `maxPositionSize + |position|` the cap fails on either side, so this bound is
+ 1451 |     // a non-fitting upper end rather than a guess — with ONE exception, which errs the safe
+ 1452 |     // way. An OPPOSITE-side order against a position ALREADY over the cap (ADL or a Stage-4
+ 1453 |     // takeover assigns size without re-checking it, and an admin can lower it under a live
+ 1454 |     // book) stays inside the "did not grow past cap" escape all the way out to `2 × |pos|`,
+ 1455 |     // which is further than this bound. The search then converges on the bound instead of
+ 1456 |     // that true maximum, so the answer is a legal size that UNDER-states what the chain
+ 1457 |     // would take. Never the reverse, which is what would revert.
+ 1458 |     const ceiling = params.maxPositionSize + absPosition + 1n;
+ 1459 |     // The largest size that needs NO pull. `topUpRequired` is non-decreasing in quantity
+ 1460 |     // (the requirement grows, the balance does not), so this predicate is monotone and the
