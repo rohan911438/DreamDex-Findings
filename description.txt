@@ -1,0 +1,228 @@
+DreamDex-Findings
+dreamDEX Perps Builder Bounty - Feedback Track submission
+
+===============================================================================
+WHAT THIS IS
+===============================================================================
+An independent quality-assurance review of dreamDEX perpetual futures on the
+Somnia Tokyo testnet (Hideki, chain 50383). It is a feedback-track deliverable:
+26 reproducible findings, each written to the bounty's required template and
+backed by a script that anyone can run to reproduce the result.
+
+The review covers the full developer-facing surface of dreamDEX perps:
+  - the TypeScript Markets SDK (@somnia-chain/markets-sdk 0.32.1)
+  - the GraphQL indexer API
+  - the observable behaviour of the on-chain contracts (PerpPool, MarginBank,
+    PerpStopOrderRegistry, LiquidationEngine)
+  - the testnet web app
+  - the developer and trader documentation
+  - the official dreamDEX bot kit and its perp strategies
+
+Repository: https://github.com/rohan911438/DreamDex-Findings
+License: MIT (Copyright (c) 2026 Rohan Kumar)
+
+===============================================================================
+RESULTS AT A GLANCE
+===============================================================================
+Total findings: 26
+  Critical: 0
+  Major:    7   (paid at USD 40 each if accepted)
+  Normal:   19  (paid at USD 15 each if accepted)
+
+By area:
+  SDK:        13   (5 major, 8 normal)
+  Contracts:   2   (2 major)
+  Docs:       10   (10 normal)
+  App:         1   (1 normal)
+
+No critical finding is claimed. The money-safety controls that could be tested
+read-only all held (see "Investigated and ruled out" below), and no issue is
+labelled above the severity its evidence supports. Any genuine security
+vulnerability would go privately to security@dreamdex.io per the bounty rules,
+never into this public repository.
+
+===============================================================================
+METHODOLOGY
+===============================================================================
+- Read-only by design. No private key is required and no transaction is sent to
+  reproduce a finding. Contract behaviour is established with eth_call
+  simulations from existing public testnet accounts, pinned to a specific block
+  where it matters. Calldata that embeds an owner (stop orders) is built through
+  an address-only wallet client that holds no key.
+- Cross-checked, not just called. Each SDK read is compared against an
+  independent source: the pool's own eth_call result, the raw on-chain order
+  book (getAllOpenOrdersOffChain), the indexer, or the documentation. A finding
+  is filed only where two sources disagree in a way that matters.
+- Pinned to the SDK's own block. Where the SDK reports asOfBlock, simulations
+  run at exactly that block, so price movement between reads cannot explain a
+  mismatch. Several early mismatches disappeared under this control and were
+  dropped rather than filed.
+- Population checks. Holders of positions across all 21 markets (7,142
+  accounts) were enumerated from the MarginBank and scanned for health; open
+  interest and risk parameters were read for every market.
+- Re-verified. Every filed finding was reproduced at least twice, at different
+  blocks, before being written up. The logs in evidence/ are from the final run
+  and carry a header with the UTC time, chain id, block range, endpoints, and
+  SDK/viem/node versions.
+
+===============================================================================
+FINDINGS - MAJOR (7)
+===============================================================================
+MAJOR-01  SDK        getMaxPerpOrderSize ignores the account's resting
+                     same-side orders under the position cap, so an order at
+                     the reported "max" reverts MaxPositionSizeExceeded.
+                     Reproduced on 11 market-sides at the SDK's own block.
+MAJOR-02  SDK        Unified createOrder only guards "at least one lot"; every
+                     perp minimum is 9-69 lots, so undersized orders are mined
+                     and revert QuantityBelowMinimum, costing gas.
+MAJOR-03  SDK        The bot kit builds Hideki clients with the Shannon address
+                     set; pool-status discovery fails silently and halted or
+                     close-only markets look tradeable to every perp strategy.
+MAJOR-04  SDK        perp-starter brackets an existing position using PERP_SIDE
+                     instead of the position's real side: it crashes leaving no
+                     TP/SL, or (with a trading key) takes "profit" at a loss and
+                     "stops out" in profit.
+MAJOR-05  SDK        perp-maker drops the IDs of quotes whose cancel failed and
+                     exits outside its cleanup path, leaving unmanaged quotes
+                     resting at stale prices, multiplied by automatic restarts.
+MAJOR-06  Contracts  No reduce-only flag for regular perp orders; a ccxt-style
+                     params.reduceOnly is silently ignored, so a close sized
+                     from a stale read can open the opposite position.
+MAJOR-18  Contracts  MarginBank.getWithdrawableCollateral (surfaced by the SDK
+                     as withdrawable) ignores unrealized PnL and margin; it
+                     overstates by up to 5.5x, once above total equity, and
+                     withdrawing the amount it reports reverts.
+
+===============================================================================
+FINDINGS - NORMAL (19)
+===============================================================================
+NORMAL-07  SDK   precision.amount is 0 on markets whose lot is 10 or 100
+                 (1000PEPE, PUMP, DOGE), so it no longer describes the grid.
+NORMAL-08  SDK   No exported ABI contains placeOrderFor / placeOrdersFor /
+                 cancelOrderFor, which the docs tell raw callers to use.
+NORMAL-09  Docs  The raw-call docs never say what expireTimestampNs to pass;
+                 0 reverts OrderAlreadyExpired.
+NORMAL-10  Docs  The market table's open-interest caps are wrong on 20 of 21
+                 markets; "a tenth per account" holds on 1 of 21.
+NORMAL-11  Docs  The SDK's bundled PERPS.md lists 2 markets with symbols that
+                 do not resolve; 21 are live. The same bad symbol is in a
+                 fetchFundingRateHistory JSDoc example.
+NORMAL-12  SDK   fetchPortfolioAnalytics("1d") fails with a NaN message instead
+                 of naming the valid timeframes.
+NORMAL-13  SDK   fetchBalance omits the Perps account: about 2,000 USDso of
+                 margin shows as 0.56 USDso.
+NORMAL-14  SDK   The bot kit pins markets-sdk ^0.31.0 / ^0.30.0, which can
+                 never install the documented 0.32.1, and resolves two copies.
+NORMAL-15  SDK   loadMarkets fails open: when pool-status discovery errors,
+                 every perp market is still reported active: true.
+NORMAL-16  Docs  The perps network has three names (Tokyo / Hideki / DreamDEX
+                 region) and no page links them, inviting the wrong address set.
+NORMAL-17  SDK   The bot kit tells testnet users stop deposits are in SOMI; on
+                 the perps testnet they are STT.
+NORMAL-19  App   The app's perps withdraw ceiling ignores the paper-USDso
+                 credit floor: it offers amounts that revert, or 0 when funds
+                 are withdrawable.
+NORMAL-20  Docs  Docs exclude paper USDso from six markets; on chain it can
+                 open positions on all 21 (stale docs or misconfigured list).
+NORMAL-21  Docs  Docs say a paper-USDso account's leverage cannot be changed;
+                 setMaxLeverage succeeds 18 of 18 times.
+NORMAL-22  Docs  Docs say no backstop bidders are registered on testnet; the
+                 LiquidationEngine reports bidderCount: 1.
+NORMAL-23  Docs  "Perp below index means shorts pay" is false on 8 of 21
+                 markets because of an undocumented +0.01%/8h funding baseline.
+NORMAL-24  Docs  The Errors page the perps docs link to lists no perp,
+                 MarginBank or perp-stop errors (9 of 9 observed are missing).
+NORMAL-25  SDK   fetchTrades and fetchOHLCV return the newest rows instead of
+                 starting at "since", so history older than one page cannot be
+                 paged.
+NORMAL-26  Docs  Docs say every pool caps builder fees at 100000 (100 bps);
+                 every perp pool runs 10000 (10 bps).
+
+===============================================================================
+INVESTIGATED AND RULED OUT (no defect filed)
+===============================================================================
+These were checked specifically for critical or major impact and are not filed,
+because the evidence did not support a defect. They show the coverage behind the
+"zero critical" result.
+
+- Liquidations: health of all 7,142 position holders across 21 markets; none
+  below maintenance margin.
+- Solvency plumbing: fullyWired true; insurance fund funded; penalty 100 bps.
+- Mark feeds: all 21 markets priceable, index fresh.
+- Trading-key / operator scope: from an unauthorized key, placeOrderFor,
+  cancelOrderFor, reduceOrderFor and recallFromChild all revert; withdraw and
+  deposit take no account argument, so a linked bot can only touch its own
+  balance. The linked-bot model holds.
+- Builder-fee enforcement: correct (approval below the cap, cap above it); only
+  the documented cap value is wrong (NORMAL-26).
+- fetchPositions size source: a fresh chain read, not a stale indexer snapshot.
+- Withdrawal enforcement: withdraw() never allows more than margin and the
+  credit floor permit; only the view is wrong (MAJOR-18).
+- Account analytics: per-position equity contributions re-sum to account equity
+  to the wei.
+- Candles vs trades: one-minute candles rebuilt from raw fills match exactly.
+- Error selectors: all 58 on the Errors page recomputed with keccak256; all
+  correct (only perp coverage is missing, NORMAL-24).
+- Margin thresholds, funding window/interval, stop deposit, liquidation penalty:
+  all match the docs.
+
+===============================================================================
+REPOSITORY STRUCTURE
+===============================================================================
+feedback/        One Markdown file per finding, in the bounty template,
+                 named MAJOR-NN-... or NORMAL-NN-...
+evidence/        <NN>-<name>.log: the output of each repro script with a header
+                 (UTC time, chain id, head block range, RPC, indexer,
+                 SDK/viem/node versions). Read-only mode noted on every log.
+evidence/code/   The exact source lines each finding cites, with line numbers
+                 and permanent links. App excerpts are verbatim from the public
+                 bundle with the chunk URL and SHA-256.
+repro/           Read-only reproduction scripts (TypeScript, run with tsx),
+                 numbered to match the findings; lib.ts has the shared client,
+                 eth_call simulator, revert decoder and on-chain book reader;
+                 run-all.mjs regenerates the evidence logs.
+observations/    Items investigated but not filed, kept for transparency (for
+                 example an indexer timeout that stopped reproducing).
+README.md        Full writeup: scope, methodology, severity rubric, findings by
+                 severity, items ruled out, and how to reproduce.
+LICENSE          MIT, Copyright (c) 2026 Rohan Kumar.
+
+===============================================================================
+HOW TO REPRODUCE
+===============================================================================
+Requirements: Node 20+ and internet access to the Hideki RPC and indexer.
+No wallet, key or testnet funds are needed.
+
+  git clone https://github.com/rohan911438/DreamDex-Findings
+  cd DreamDex-Findings/repro
+  npm install
+  npx tsx 01-max-size-ignores-resting-orders.ts   # one finding
+  node run-all.mjs                                 # all findings -> ../evidence
+  node extract-code.mjs                            # refresh cited source lines
+
+A few findings (MAJOR-01, MAJOR-04, MAJOR-18, NORMAL-19, NORMAL-20) depend on
+accounts that are actively trading or hold paper USDso; the scripts accept an
+account argument, and the relevant ones search for a suitable account. The block
+numbers in each evidence log record the exact state the result came from.
+
+===============================================================================
+VERSIONS AND ENDPOINTS
+===============================================================================
+Network:    Somnia Tokyo testnet, Hideki, chain id 50383 (the app's DreamDEX
+            region)
+RPC:        https://api.hideki2.infra.testnet.somnia.network
+Indexer:    https://hideki-dev.smk.somnia.host/v1/graphql
+SDK:        @somnia-chain/markets-sdk 0.32.1, viem 2.x
+Bot kit:    somnia-chain/dreamdex-bot-kit @ 25798660bbe4674a6f83a960b202852896e2fed4
+MarginBank: 0x478769E1177C0773c43A593DCCc4Ad15F15F1394
+Collateral (USDso): 0xed7993A74dAe1e6656B704A424DcD8711aAf4F72
+Testing window: 2026-10-20 (UTC)
+
+===============================================================================
+DISCLOSURE
+===============================================================================
+No finding in this repository is a security vulnerability. Accounts named in
+reports and logs are public testnet addresses read from on-chain state; no
+private data is included. Any security-sensitive issue would be reported
+privately to security@dreamdex.io and kept out of this repository, per the
+bounty rules.
